@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Institutions Administratives – Réflexes Robot pour QCM</title>
+    <style>
+        :root {
+            --bleu: #2563eb; --violet: #7c3aed; --orange: #ea580c; --vert: #059669;
+            --rose: #db2777; --cyan: #0891b2; --jaune: #ca8a04; --rouge: #dc2626;
+            --gris-fonce: #1e293b; --gris-moyen: #475569; --blanc: #ffffff;
+            --bleu-clair: #dbeafe; --violet-clair: #ede9fe; --orange-clair: #fed7aa;
+            --vert-clair: #bbf7d0; --rose-clair: #fbcfe8; --cyan-clair: #a5f3fc;
+            --jaune-clair: #fde68a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f8fafc; color: #0f172a; line-height: 1.7;
+            max-width: 1500px; margin: auto; padding: 30px 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 60%, #db2777 100%);
+            color: white; padding: 40px 50px; border-radius: 30px;
+            margin-bottom: 35px; box-shadow: 0 20px 40px rgba(124,58,237,0.3);
+            text-align: center;
+        }
+        .header h1 { font-size: 2.8rem; font-weight: 800; }
+        .header .subtitle { font-size: 1.4rem; opacity: 0.95; }
+        .meta { display: flex; justify-content: center; gap: 25px; margin-top: 20px; flex-wrap: wrap;
+            font-size: 1rem; background: rgba(255,255,255,0.2); border-radius: 50px; padding: 10px 30px; }
+        .meta span { background: rgba(255,255,255,0.3); padding: 6px 20px; border-radius: 20px; font-weight: 600; }
+
+        .section {
+            margin: 35px 0; border-radius: 24px; padding: 30px 35px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-left: 8px solid;
+            transition: all 0.2s;
+        }
+        .section:hover { transform: translateY(-2px); }
+
+        .s0 { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-color: #64748b; }
+        .s1 { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #3b82f6; }
+        .s2 { background: linear-gradient(135deg, #faf5ff, #ede9fe); border-color: #8b5cf6; }
+        .s3 { background: linear-gradient(135deg, #fff7ed, #fed7aa); border-color: #f97316; }
+        .s4 { background: linear-gradient(135deg, #f0fdf4, #bbf7d0); border-color: #10b981; }
+        .s5 { background: linear-gradient(135deg, #fdf2f8, #fbcfe8); border-color: #ec4899; }
+        .s6 { background: linear-gradient(135deg, #ecfeff, #a5f3fc); border-color: #06b6d4; }
+        .s7 { background: linear-gradient(135deg, #eef2ff, #c7d2fe); border-color: #6366f1; }
+        .s8 { background: linear-gradient(135deg, #fff1f2, #fecdd3); border-color: #f43f5e; }
+        .s9 { background: linear-gradient(135deg, #fffbeb, #fde68a); border-color: #f59e0b; }
+
+        .section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 20px; color: #0f172a;
+            border-bottom: 3px solid rgba(0,0,0,0.1); padding-bottom: 10px; }
+        .section h3 { font-size: 1.4rem; font-weight: 700; margin: 20px 0 10px; color: #1e293b; }
+        .section h4 { font-size: 1.2rem; font-weight: 600; margin: 15px 0 8px; color: #334155; }
+        .section p { margin-bottom: 12px; }
+        .section ul, .section ol { list-style: none; padding-left: 0; margin: 12px 0; }
+        .section li { padding: 8px 0 8px 32px; position: relative; margin-bottom: 4px; }
+        .section li::before {
+            content: "▹"; position: absolute; left: 8px; font-weight: bold; font-size: 1.2rem;
+        }
+        .s0 li::before { color: #64748b; } .s1 li::before { color: #3b82f6; } .s2 li::before { color: #8b5cf6; }
+        .s3 li::before { color: #f97316; } .s4 li::before { color: #10b981; } .s5 li::before { color: #ec4899; }
+        .s6 li::before { color: #06b6d4; } .s7 li::before { color: #6366f1; } .s8 li::before { color: #f43f5e; }
+        .s9 li::before { color: #f59e0b; }
+
+        .box { background: rgba(255,255,255,0.85); backdrop-filter: blur(5px); border-radius: 16px;
+            padding: 20px 25px; margin: 20px 0; box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05); }
+        .key-point { background: #1e293b; color: white; border-radius: 18px; padding: 22px 28px;
+            margin: 24px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .key-point h4 { color: #facc15; margin-bottom: 12px; }
+        .key-point strong { color: #facc15; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; border-radius: 16px;
+            overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        th { background: #1e293b; color: white; padding: 14px; text-align: left; font-weight: 700; }
+        td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; background: rgba(255,255,255,0.9);
+            vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+
+        .algo {
+            background: #f1f5f9; border-radius: 16px; padding: 20px; margin: 20px 0;
+            border: 1px solid #cbd5e1; font-family: monospace; white-space: pre-wrap;
+        }
+        .checklist { background: white; border-radius: 16px; padding: 20px 25px; margin: 20px 0;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+        .checklist li { padding: 6px 0 6px 30px; }
+        .checklist li::before { content: "☐"; color: #3b82f6; font-weight: bold; }
+
+        .footer { text-align: center; color: #64748b; margin-top: 50px; font-size: 0.9rem;
+            border-top: 2px solid #cbd5e1; padding-top: 25px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>INSTITUTIONS ADMINISTRATIVES</h1>
+    <div class="subtitle">Programmation Mentale pour le QCM – Réflexes Automatiques</div>
+    <div class="meta">
+        <span>Cours Pr. Gilles Dumont</span>
+        <span>UPA – L1 Droit</span>
+        <span>Examen : 1h – 15 questions</span>
+        <span>Objectif 20/20</span>
+    </div>
+</div>
+
+<!-- ========== INTRODUCTION : DEVENIR UN ROBOT ========== -->
+<div class="section s0">
+    <h2>0. DEVENIR UN ROBOT DE PRÉCISION</h2>
+    <div class="box">
+        <h3>Votre mission</h3>
+        <p>Chaque question de l'examen est un <strong>mini‑cas pratique</strong>. Vous devez appliquer une séquence logique immuable pour ne jamais vous tromper. Ce document programme votre cerveau avec des <strong>réflexes conditionnés</strong>. Après l'avoir lu, vous saurez immédiatement :</p>
+        <ul>
+            <li>Qui peut agir ? (compétence)</li>
+            <li>Comment contester ? (recours, déféré)</li>
+            <li>Quel juge est compétent ? (Conseil d'État, tribunal administratif)</li>
+            <li>Quel contrôle s'applique ? (hiérarchique, légalité, tutelle)</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ========== ALGORITHME GÉNÉRAL ========== -->
+<div class="section s1">
+    <h2>1. ALGORITHME GÉNÉRAL DE RÉSOLUTION</h2>
+    <div class="algo">
+DÈS QUE JE LIS UN CAS PRATIQUE :
+1. J'IDENTIFIE L'AUTEUR DE L'ACTE
+   → Président de la République ? Premier ministre ? Ministre ? Préfet ? Maire ? Conseil municipal ?
+2. JE QUALIFIE L'ACTE
+   → Décret ? Arrêté ? Délibération ? Contrat ? Décision individuelle ?
+3. JE VÉRIFIE LA COMPÉTENCE
+   → L'auteur avait-il le pouvoir de prendre cet acte ?
+4. JE REPÈRE LE CONTRÔLE OU LE RECOURS
+   → Qui conteste ? Quelle juridiction ? Quel type de contrôle ?
+5. J'APPLIQUE LA RÈGLE DE DROIT
+   → Légal / Illégal ? Recevable / Irrecevable ?
+    </div>
+    <div class="key-point">
+        <h4>À FAIRE SYSTÉMATIQUEMENT</h4>
+        <p>Avant de cocher une case, <strong>récitez mentalement</strong> les étapes de l'algorithme. Cela prend 10 secondes et empêche les erreurs d'étourderie.</p>
+    </div>
+</div>
+
+<!-- ========== RÉFLEXES PAR ACTEUR ========== -->
+<div class="section s2">
+    <h2>2. RÉFLEXES PAR ACTEUR (QUI PEUT QUOI ?)</h2>
+    <div class="box">
+        <h3>2.1 Le Président de la République</h3>
+        <ul>
+            <li><strong>Peut :</strong> nommer le Premier ministre, les ministres, signer les décrets en Conseil des ministres (art. 13).</li>
+            <li><strong>Ne peut pas :</strong> exercer le pouvoir réglementaire général (art. 21 → PM), prendre un arrêté ministériel.</li>
+            <li><strong>Recours :</strong> ses actes administratifs (décrets) sont attaqués devant le <strong>Conseil d'État</strong>. Mais un acte de gouvernement (ex. nomination du PM) est <strong>irrecevable</strong>.</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>2.2 Le Premier ministre</h3>
+        <ul>
+            <li><strong>Peut :</strong> prendre tous les décrets non réservés au Président (art. 21), coordonner l'action gouvernementale, nommer aux emplois.</li>
+            <li><strong>Ne peut pas :</strong> sanctionner un ministre (pas de pouvoir hiérarchique).</li>
+            <li><strong>Recours :</strong> décrets attaqués devant le <strong>Conseil d'État</strong>.</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>2.3 Le ministre</h3>
+        <ul>
+            <li><strong>Peut :</strong> agir uniquement dans son domaine d'attribution (décret d'attribution). Prend des <strong>arrêtés</strong>, des décisions individuelles.</li>
+            <li><strong>Ne peut pas :</strong> prendre un décret en Conseil d'État, ni un décret simple (sauf délégation explicite).</li>
+            <li><strong>Recours :</strong> arrêtés attaqués devant le <strong>tribunal administratif de Paris</strong> (si siège à Paris).</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>2.4 Le préfet</h3>
+        <ul>
+            <li><strong>Peut :</strong> prendre des arrêtés préfectoraux (police, décisions individuelles déconcentrées), déférer les actes des CT au tribunal administratif.</li>
+            <li><strong>Ne peut pas :</strong> annuler un acte d'une collectivité territoriale (plus de tutelle).</li>
+            <li><strong>Autorité :</strong> il exerce le contrôle de légalité, et un pouvoir de substitution en matière de police si carence du maire.</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>2.5 Le maire</h3>
+        <ul>
+            <li><strong>Double casquette :</strong>
+                <ul>
+                    <li><strong>Exécutif communal :</strong> prépare et exécute les délibérations, pouvoir de police municipale, chef du personnel communal.</li>
+                    <li><strong>Agent de l'État :</strong> état civil, listes électorales, police judiciaire. Dans ce rôle, il est sous l'autorité hiérarchique du préfet.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- ========== RÉFLEXES PAR TYPE D'ACTE ========== -->
+<div class="section s3">
+    <h2>3. RÉFLEXES PAR TYPE D'ACTE (QUE CONTESTE-T-ON ?)</h2>
+    <div class="box">
+        <h3>3.1 Un décret</h3>
+        <ul>
+            <li>Signé par le Président ou le PM. Toujours attaqué devant le <strong>Conseil d'État</strong> en premier et dernier ressort.</li>
+            <li>Si c'est un <strong>décret en Conseil d'État</strong> → vérifier que le Conseil d'État a bien été consulté (sinon vice de compétence).</li>
+            <li>Si c'est un décret de nomination du PM → <strong>acte de gouvernement</strong>, irrecevable.</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>3.2 Un arrêté</h3>
+        <ul>
+            <li>Arrêté ministériel → attaqué au <strong>tribunal administratif de Paris</strong> (si le ministre a son siège à Paris).</li>
+            <li>Arrêté préfectoral → TA du ressort du préfet.</li>
+            <li>Arrêté municipal → TA du ressort de la commune.</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>3.3 Une délibération</h3>
+        <ul>
+            <li>Conseil municipal, départemental, régional → attaquée au <strong>tribunal administratif</strong> territorialement compétent.</li>
+            <li>Le préfet peut la <strong>déférer</strong> dans les 2 mois (déféré préfectoral).</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ========== ALGORITHMES DE CONTRÔLE ========== -->
+<div class="section s4">
+    <h2>4. ALGORITHMES DE CONTRÔLE</h2>
+    <div class="box">
+        <h3>4.1 Contrôle hiérarchique</h3>
+        <ul>
+            <li>S'exerce au sein d'une <strong>même personne morale</strong> (État, établissement public).</li>
+            <li>Le supérieur peut <strong>annuler, réformer, sanctionner</strong>.</li>
+            <li>S'applique : préfet sur les services déconcentrés, ministre sur son administration, maire (comme chef de service) sur le personnel communal.</li>
+            <li><strong>Ne s'applique pas</strong> entre l'État et les collectivités territoriales (décentralisation).</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>4.2 Contrôle de légalité (déféré préfectoral)</h3>
+        <ul>
+            <li>Le préfet <strong>ne peut pas annuler</strong> l'acte d'une CT. Il doit saisir le tribunal administratif.</li>
+            <li>Délai : <strong>2 mois</strong> après transmission.</li>
+            <li>Peut demander la suspension en référé (urgence + doute sérieux).</li>
+            <li>En urbanisme : suspension automatique si déféré + demande de suspension dans les 10 jours.</li>
+        </ul>
+    </div>
+    <div class="box">
+        <h3>4.3 Tutelle</h3>
+        <ul>
+            <li>S'exerce sur les <strong>établissements publics</strong> par la personne publique de rattachement.</li>
+            <li>Pas un pouvoir hiérarchique ; la tutelle peut demander une seconde délibération, ou saisir le juge.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ========== ARBRES DE DÉCISION DÉTAILLÉS ========== -->
+<div class="section s5">
+    <h2>5. ARBRES DE DÉCISION – CAS PRATIQUES</h2>
+    <div class="box">
+        <h3>5.1 Légalité d'un décret modifiant un statut d'établissement public</h3>
+        <ol>
+            <li>Qui l'a pris ? (Président ? PM ?)</li>
+            <li>Est-ce un décret en Conseil d'État ? (si oui, consultation obligatoire du CE)</li>
+            <li>La procédure a-t-elle été respectée ? (CE consulté ? SGG ?)</li>
+            <li>L'autorité était-elle compétente ? (art. 21 : PM, sauf si texte spécial)</li>
+        </ol>
+    </div>
+    <div class="box">
+        <h3>5.2 Recours contre un arrêté municipal interdisant une manifestation</h3>
+        <ol>
+            <li>Le maire a-t-il le pouvoir de police ? Oui (L.2212-1 CGCT).</li>
+            <li>La mesure est-elle proportionnée ? (interdiction générale = disproportionnée)</li>
+            <li>Le recours se fait devant le TA territorialement compétent.</li>
+            <li>Le préfet pourrait également déférer l'arrêté s'il l'estime illégal.</li>
+        </ol>
+    </div>
+    <div class="box">
+        <h3>5.3 Conflit entre un préfet et un maire qui refuse d'inscrire un électeur</h3>
+        <ol>
+            <li>Le maire agit en tant qu'agent de l'État (listes électorales).</li>
+            <li>Le préfet a autorité hiérarchique sur le maire dans cette mission.</li>
+            <li>Le préfet peut se substituer au maire et inscrire lui-même l'électeur.</li>
+            <li>Le préfet peut également saisir le TA pour faire annuler le refus.</li>
+        </ol>
+    </div>
+</div>
+
+<!-- ========== FICHES SYNTHÉTIQUES ULTRA-DÉTAILLÉES ========== -->
+<div class="section s6">
+    <h2>6. FICHES SYNTHÉTIQUES – TOUT LE COURS EN TABLEAUX</h2>
+    <div class="box">
+        <h3>6.1 Les sources constitutionnelles</h3>
+        <table>
+            <tr><th>Article</th><th>Contenu</th><th>Application QCM</th></tr>
+            <tr><td>Art. 1</td><td>France indivisible, laïque, démocratique, sociale</td><td>Pas de collectivité législative</td></tr>
+            <tr><td>Art. 5</td><td>Président arbitre, continuité de l'État</td><td>Pas de domaine réservé administratif</td></tr>
+            <tr><td>Art. 13</td><td>Nomination aux emplois civils/militaires</td><td>Décrets de nomination = actes administratifs</td></tr>
+            <tr><td>Art. 20</td><td>Gouvernement dispose de l'administration</td><td>PM dirige, pas hiérarchique sur ministres</td></tr>
+            <tr><td>Art. 21</td><td>PM exerce le pouvoir réglementaire</td><td>PM autorité admin de principe</td></tr>
+            <tr><td>Art. 72</td><td>Libre administration des CT par conseils élus</td><td>Contrôle de légalité, pas de tutelle</td></tr>
+            <tr><td>Art. 72-2</td><td>Ressources des CT proportionnées</td><td>Transfert = compensation financière</td></tr>
+        </table>
+    </div>
+    <div class="box">
+        <h3>6.2 Les autorités de police administrative</h3>
+        <table>
+            <tr><th>Autorité</th><th>Domaine</th><th>Texte</th></tr>
+            <tr><td>Maire</td><td>Police municipale générale (tranquillité, sécurité, salubrité)</td><td>L.2212-1 CGCT</td></tr>
+            <tr><td>Préfet</td><td>Substitution si carence, police spéciale (installations classées, étrangers)</td><td>L.2215-1 CGCT</td></tr>
+            <tr><td>Ministre de l'Intérieur</td><td>Police nationale, ordre public national</td><td></td></tr>
+            <tr><td>Président d'université</td><td>Ordre public au sein de l'établissement</td><td></td></tr>
+        </table>
+    </div>
+    <div class="box">
+        <h3>6.3 Compétence juridictionnelle</h3>
+        <table>
+            <tr><th>Acte</th><th>Juridiction compétente</th></tr>
+            <tr><td>Décret (Président, PM)</td><td>Conseil d'État (1er et dernier ressort)</td></tr>
+            <tr><td>Arrêté ministériel</td><td>Tribunal administratif de Paris (ou du lieu si délégué)</td></tr>
+            <tr><td>Arrêté préfectoral</td><td>TA territorialement compétent</td></tr>
+            <tr><td>Délibération CT</td><td>TA territorialement compétent</td></tr>
+            <tr><td>Acte d'un EP</td><td>TA du siège de l'établissement</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- ========== PIÈGES SYSTÉMATIQUES ========== -->
+<div class="section s7">
+    <h2>7. PIÈGES IDENTIFIÉS ET PARADES</h2>
+    <div class="box">
+        <h3>Piège 1 : Nomination du PM = acte de gouvernement</h3>
+        <p>Même si c'est un décret, <strong>pas de recours possible</strong>. → Cocher « rejeté pour irrecevabilité ».</p>
+    </div>
+    <div class="box">
+        <h3>Piège 2 : Décret en Conseil d'État sans consultation</h3>
+        <p>Vice de <strong>compétence</strong> (et non de procédure). → Annulation automatique si le CE n'a pas été consulté.</p>
+    </div>
+    <div class="box">
+        <h3>Piège 3 : Le préfet ne peut pas sanctionner un maire</h3>
+        <p>Suspension/révocation = ministre de l'Intérieur / décret en CM. Le préfet ne peut que signaler.</p>
+    </div>
+    <div class="box">
+        <h3>Piège 4 : Un ministre sans décret d'attribution</h3>
+        <p>Après nomination, un ministre n'a <strong>aucune compétence</strong> avant le décret d'attribution.</p>
+    </div>
+    <div class="box">
+        <h3>Piège 5 : Clause de compétence générale</h3>
+        <p>Seules les <strong>communes</strong> l'ont encore. Départements et régions ont des compétences d'attribution.</p>
+    </div>
+</div>
+
+<!-- ========== EXEMPLES DE CAS PRATIQUES PAS À PAS ========== -->
+<div class="section s8">
+    <h2>8. EXEMPLES DE MINI‑CAS TRAITÉS ÉTAPE PAR ÉTAPE</h2>
+    <div class="box">
+        <h3>Exemple 1 (sujet 2024 – Q1)</h3>
+        <p><strong>Faits :</strong> M. Pantin conteste le décret de nomination du PM devant le Conseil d'État.</p>
+        <p><strong>Réflexe :</strong> qualification de l'acte → décret de nomination du PM. Est-ce un acte administratif ? <strong>Non</strong>, c'est un acte de gouvernement. Le recours est irrecevable. → <strong>Réponse C</strong> (rejeté, car acte politique).</p>
+    </div>
+    <div class="box">
+        <h3>Exemple 2 (sujet 2025 – Q3)</h3>
+        <p><strong>Faits :</strong> Décret modifiant le statut du Musée du Quai Branly sans consultation du Conseil d'État.</p>
+        <p><strong>Réflexe :</strong> Le décret modifie un décret en Conseil d'État. La consultation du CE est obligatoire. Absence = <strong>vice de compétence</strong>. Le décret est illégal. → <strong>Réponse A et B</strong> (illégal pour vice de compétence et vice de procédure ? Non, le CE estime que c'est un vice de compétence, mais certaines réponses peuvent mentionner les deux ; vérifier la subtilité).</p>
+    </div>
+    <div class="box">
+        <h3>Exemple 3 (sujet 2025 – Q16)</h3>
+        <p><strong>Faits :</strong> Le préfet du Rhône (préfet de région) demande au préfet du Puy-de-Dôme d'agir contre un maire. Le préfet de département doit-il obéir ?</p>
+        <p><strong>Réflexe :</strong> Le préfet de région a <strong>autorité fonctionnelle</strong> sur les préfets de département (décret 2004). Il peut donner des directives, mais pas hiérarchique. Le préfet de département doit « prendre en compte » la demande. → <strong>Réponse C</strong> (doit prendre en compte la demande).</p>
+    </div>
+</div>
+
+<!-- ========== CHECKLIST FINALE ========== -->
+<div class="section s9">
+    <h2>9. CHECKLIST ULTIME – 5 MINUTES AVANT LA FIN</h2>
+    <ul class="checklist">
+        <li>Ai-je bien identifié l'auteur de l'acte et sa qualité ?</li>
+        <li>Ai-je vérifié la compétence (décret d'attribution, domaine) ?</li>
+        <li>Ai-je pensé à la double casquette du maire ?</li>
+        <li>Ai-je vérifié si l'acte est un acte de gouvernement (irrecevable) ?</li>
+        <li>Ai-je appliqué la bonne juridiction selon l'acte ?</li>
+        <li>Pour un déféré préfectoral, ai-je vérifié le délai (2 mois) et la suspension possible ?</li>
+        <li>En matière de police, ai-je contrôlé la proportionnalité ?</li>
+        <li>Ai-je relu les questions à points doubles ?</li>
+        <li>Toujours cocher au moins une case, pas de point négatif.</li>
+    </ul>
+</div>
+
+<div class="footer">
+    Guide de programmation mentale – Institutions Administratives. Vous êtes maintenant un robot de précision. Bonne chance !
+</div>
+
+</body>
+</html>
